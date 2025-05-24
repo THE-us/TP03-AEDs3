@@ -10,7 +10,7 @@
 
 ## 👨‍💻 Nomes dos Participantes
 - Bruno Rafael Santos Oliveira  
-- Matheus Eduardo  
+- Matheus Eduardo Campos Soares
 - Thiago Pereira Oliveira
 
 
