@@ -102,48 +102,16 @@ public class MenuSeries
         do 
         {
             System.out.print("Nome da série (min. 4 letras): ");
-            
-            try 
-            {
-                nome = console.nextLine();
-            }
-            catch (Exception e)
-            {
-                System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-                nome = "";
-                System.exit (0);
-            }
-
+            nome = console.nextLine();
         } while (nome.length() < 4);
         do 
         {
             System.out.print("Gênero da série (min. 4 letras): ");
-            
-            try 
-            {
-                genero = console.nextLine();
-            }
-            catch (Exception e)
-            {
-                System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-                genero = "";
-                System.exit (0);
-            }
-        } 
-        while (genero.length() < 4);
+            genero = console.nextLine();
+        } while (genero.length() < 4);
 
         System.out.print("Classificação indicativa da série: ");
-        
-            try 
-            {
-                classificacaoIndicativa = console.nextShort ();
-            }
-            catch (Exception e)
-            {
-                System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-                classificacaoIndicativa = -1;
-                System.exit (0);
-            }
+        classificacaoIndicativa = console.nextShort();
 
         boolean anoValido = false;
         do 
@@ -160,68 +128,28 @@ public class MenuSeries
                 {
                     System.err.println("Ano inválido! Insira um ano entre 1900 e " + anoAtual + ".");
                 }
-            } 
-            catch (NumberFormatException e) 
+            } catch (NumberFormatException e) 
             {
                 System.err.println("Ano inválido! Insira um valor numérico.");
             }
-            catch (Exception e)
-            {
-                System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-                System.exit (0);
-            }
-            
         } while (!anoValido);
 
         
         do 
         {
             System.out.print("Sinopse (min. 10 letras): ");
-            
-            try
-            {
-                sinopse = console.nextLine();
-            }
-            catch (Exception e)
-            {
-                System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-                sinopse = "";
-                System.exit (0);
-            }
-
+            sinopse = console.nextLine();
         } while (sinopse.length() < 10);
 
         
         do 
         {
             System.out.print("Streaming (min. 3 letras): ");
-            
-            try 
-            {
-                streaming = console.nextLine();
-            }
-            catch (Exception e)
-            {
-                System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-                streaming = "";
-                System.exit (0);
-            }
-
+            streaming = console.nextLine();
         } while (streaming.length() < 3);
 
         System.out.print("\nConfirma a inclusão da série? (S/N) ");
-        char resp = ' ';
-
-            try 
-            {
-                resp = console.nextLine ().toLowerCase ().charAt (0);
-            }
-            catch (Exception e)
-            {
-                System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-                System.exit (0);
-            }
-
+        char resp = console.nextLine().charAt(0);
         if (resp == 'S' || resp == 's') 
         {
             try 
@@ -242,18 +170,7 @@ public class MenuSeries
         System.out.println("\nBusca de Série");
 
         System.out.print("Nome da Série: ");
-        String nome = "";
-
-        try 
-        {
-            nome = console.nextLine();
-        }
-        catch (Exception e)
-        {
-            System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-            nome = "";
-            System.exit (0);
-        }
+        String nome = console.nextLine();
 
         System.out.println();
         try 
@@ -283,20 +200,7 @@ public class MenuSeries
         System.out.println("\nAlteração de Série");
 
         System.out.print("Nome da Série: ");
-
-        String nome = "";
-
-        try 
-        {
-            nome = console.nextLine ();
-        }
-        catch (Exception e)
-        {
-            System.out.print ("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
-            nome = "";
-            System.exit (0);
-        }
-
+        String nome = console.nextLine();
         System.out.println();
 
         try 
