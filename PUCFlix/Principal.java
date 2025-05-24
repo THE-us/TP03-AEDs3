@@ -75,6 +75,12 @@ public class Principal
                 {
                     opcao = -1;
                 }
+                catch (Exception e)
+                {
+                    System.out.print("\n\n\tPrograma Finalizado Com Sucesso.\n\n");
+                    opcao = -404;
+                    System.exit(0);
+                }
 
                 switch (opcao) 
                 {
