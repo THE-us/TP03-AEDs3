@@ -3,12 +3,19 @@
 
 package series;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 //////////////////////////////////////////////////
 // BIBLIOTECAS DO SISTEMA
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import aeds3.ElementoLista;
 import aeds3.ListaInvertida;
 
 //////////////////////////////////////////////////
@@ -23,6 +30,7 @@ import episodios.*;
 
 public class MenuSeries 
 {
+    ListaInvertida list;
     ArquivoSeries arqSeries = new ArquivoSeries();
     ArquivoEpisodios arqEpisodios = new ArquivoEpisodios();
     private static Scanner console = new Scanner(System.in);
@@ -32,8 +40,144 @@ public class MenuSeries
     {
         arqSeries = new ArquivoSeries();
         arqEpisodios = new ArquivoEpisodios();
+        // criar lista invetida
+        // list = new ListaInvertida(); 
+    }
+    // ==================== métodos da macieira ========================================
+
+    public float calcularIDF(ElementoLista[] element) throws Exception {
+        int res = list.numeroEntidades();
+        if (element == null)
+            return 0;
+        int freq = element.length;
+        return (float) (Math.log((float) res / freq) + 1);
+    }
+    public static List<Float> calcularFrequencia(List<Integer> frequencias) {
+        List<Float> tf = new ArrayList<>();
+        int total = 0;
+
+        for (int freq : frequencias) {
+            total += freq;
+        }
+
+        for (int freq : frequencias) {
+            tf.add((float) freq / total);
+        }
+
+        return tf;
+    }
+    public static List<String> carregarStopwords(String caminhoArquivo) throws IOException {
+        List<String> stopwords = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                stopwords.add(linha.trim().toLowerCase());
+            }
+        }
+        return stopwords;
     }
 
+    public static void gerarTermosComFrequencia(String[] termos, List<String> termosFiltrados,
+            List<Integer> frequencias) throws IOException {
+        // arquivo de stopwords
+        List<String> stopwords = carregarStopwords("stopwords.txt");
+        // percorre cada termo
+        for (String termo : termos) {
+            // se nao for stopword
+            if (!stopwords.contains(termo)) {
+                int index = termosFiltrados.indexOf(termo);
+                // Verifica se o termo ja esta na lista termosFiltrados
+                if (index == -1) {
+                    // se nao tiver adiciona e a frequencia
+                    termosFiltrados.add(termo);
+                    frequencias.add(1);
+                } else {
+                    // Se ja estiver, incrementa a frequencia
+                    frequencias.set(index, frequencias.get(index) + 1);
+                }
+            }
+        }
+    }
+
+    public Serie buscarIdf(String nome) throws Exception {
+        String[] termos = nome.split("\\W+");
+        List<String> termosFiltrados = new ArrayList<>();
+        List<Integer> frequencias = new ArrayList<>();
+        // filtrar termos que nao sao stopwords e frequencia absoluta
+        gerarTermosComFrequencia(termos, termosFiltrados, frequencias);
+
+        System.out.println();
+
+        try {
+            List<Integer> ids = new ArrayList<>();
+            List<Float> tfidfs = new ArrayList<>();
+
+            for (String s : termosFiltrados) {
+                ElementoLista[] resultados = list.read(s);
+                if (resultados.length == 0) {
+                    System.out.println("Nenhuma série encontrada com o nome '" + nome + "'.");
+                } else {
+                    // calcular idf
+                    float idf = calcularIDF(resultados);
+
+                    for (ElementoLista el : resultados) {
+                        float tf = el.getFrequencia();
+                        float tfidf = tf * idf;
+
+                        int id = el.getId();
+                        int index = ids.indexOf(id);
+
+                        if (index != -1) {
+                            // Se ja existe, soma
+                            tfidfs.set(index, tfidfs.get(index) + tfidf);
+                        } else {
+                            // Se nao existe, adiciona
+                            ids.add(id);
+                            tfidfs.add(tfidf);
+                        }
+                    }
+                }
+            }
+            List<Integer> indices = new ArrayList<>();
+            for (int i = 0; i < ids.size(); i++) {
+                indices.add(i);
+            }
+
+            // Ordenar os índices de acordo com os tfidfs (ordem decrescente)
+            indices.sort((i1, i2) -> Float.compare(tfidfs.get(i2), tfidfs.get(i1)));
+
+            System.out.println("Séries encontradas:");
+            List<Serie> seriesEncontradas = new ArrayList<>();
+            int contador = 0;
+            for (int i : indices) {
+                Serie serie = arqSeries.read(ids.get(i));
+                if (serie != null) {
+                    System.out.println("\t[" + contador + "]");
+                    mostraSerie(serie);
+                    seriesEncontradas.add(serie);
+                    contador++;
+                    // System.out.printf("TF-IDF Total: %.3f\n\n", tfidfs.get(i));
+                }
+            }
+            System.out.print("Digite o número da série a ser atualizada: ");
+            int num = console.nextInt();
+            console.nextLine();
+
+            if (num < 0 || num >= seriesEncontradas.size()) {
+                System.out.println("Número inválido.");
+                return null;
+            }
+
+            return seriesEncontradas.get(num);
+
+        } catch (Exception e) {
+            System.out.println("Erro ao buscar série.");
+        }
+        return null;
+    }
+
+    // ==================== métodos da macieira ========================================
+    
     public void menu(String servico) throws Exception 
     {
         int opcao;
