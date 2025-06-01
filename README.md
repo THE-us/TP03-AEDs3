@@ -4,7 +4,7 @@
 
 
 ## 📌 O que o trabalho de vocês faz?
-> O sistema permite o gerenciamento de séries e atores com operações de **inclusão**, **busca**, **alteração** e **remoção**, utilizando **árvores B+** para assegurar o relacionamento consistente entre entidades.
+> O sistema permite o gerenciamento de séries e atores com operações de **inclusão**, **busca**, **alteração** e **remoção**, utilizando **Lista Invertida** para assegurar o relacionamento consistente entre entidades.
 
 
 
@@ -17,17 +17,17 @@
 
 ## 🧪 Experiência
 
-### ✅ Vocês implementaram todos os requisitos?
-- [ ]
+###  Vocês implementaram todos os requisitos?
+- [✅] Sim, implementamos todos os requisitos previstos
 
 ### 🧩 Houve alguma operação mais difícil?
-- [ ]
+- [✅] Sim, a principal dificuldade foi no cálculo do TFxIDF
 
 ### 🧱 Vocês enfrentaram algum desafio na implementação?
-- [ ]
+- [✅] Sim, além do cálculo do TFxIDF, tivemos desafios para integrar esse cálculo de forma eficiente e correta na estrutura da lista invertida.
 
 ### 🎯 Os resultados foram alcançados?
-- [ ]
+- [✅] Sim, a lista invertida está funcionando corretamente, permitindo consultas eficientes e exibição clara das séries, episódios e atores.
 
 
 
